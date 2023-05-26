@@ -4,7 +4,7 @@
   "description": "Criação de API para controle de produtos, cadastrar e listar.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon index"
   },
   "repository": {
     "type": "git",
