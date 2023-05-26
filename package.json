@@ -1,0 +1,22 @@
+{
+  "name": "controle_de_produto_api_trello",
+  "version": "1.0.0",
+  "description": "Criação de API para controle de produtos, cadastrar e listar.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deborasous/API_controle_de_produtos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/deborasous/API_controle_de_produtos/issues"
+  },
+  "homepage": "https://github.com/deborasous/API_controle_de_produtos#readme",
+  "dependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
