@@ -17,6 +17,12 @@
       "peso": 0.8,
       "quantidade": 2,
       "codigo": "IJKL789"
+    },
+    {
+      "nome": "Produto 4",
+      "peso": 0.5,
+      "quantidade": 10,
+      "codigo": "ABC565"
     }
   ]
 }

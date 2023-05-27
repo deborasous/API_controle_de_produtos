@@ -1,6 +1,5 @@
 const http = require("http")
 const fs = require("fs")
-const { error } = require("console")
 
 function readFileJson(fileJson, callback) {
   fs.readFile(fileJson, "utf-8", (error, data)=>{
@@ -13,13 +12,13 @@ function readFileJson(fileJson, callback) {
       const productData = JSON.parse(data)
 
       //verificar se os dados do array é uma lista
-      if (!Array.isArray(productData)) {
+      if (!Array.isArray(productData.produtos)) {
         const error = new Error("Os dados do arquivo não são uma lista.")
         callback(error, null)
         return
       }
 
-      callback(null, productData)
+      callback(null, productData.produtos)
     } catch (error) {
       callback(error, null)
     }
@@ -38,7 +37,7 @@ function saveDataJson(datas, callback) {
      */
     try {
       const productData = JSON.parse(data)
-      productData.push(datas)
+      productData.produtos.push(datas)
 
       fs.writeFile("data/data.json", JSON.stringify(productData), 'utf-8', (error)=>{
         if (error) {
@@ -57,23 +56,56 @@ function saveDataJson(datas, callback) {
 const server =http.createServer((request, response)=>{
 
   //roteamento
-  switch (request.method) {
-    case "GET":
-      readFileJson('data/data.json', (error, data)=>{
-        if (error) {
-          console.error("Erro ao ler os dados do arquivo.", error)
-          return
-        }
-        response.writeHead(200, {
-          'Content-Type': 'application/json, charset=utf-8'
-        })
-        response.end(JSON.stringify(data))
-        console.log(`Lista de produtos: ${data}`)
-      })
+  switch (request.url) {
+    case '/':
+      switch (request.method) {
+        case "GET":
+          readFileJson('data/data.json', (error, data)=>{
+            if (error) {
+              console.error("Erro ao ler os dados do arquivo.", error)
+              return
+            }
+            response.writeHead(200, {
+              'Content-Type': 'application/json, charset=utf-8'
+            })
+            response.end(JSON.stringify(data))
+            console.log(`Lista de produtos: ${JSON.stringify(data)}`)
+          })
+          break;
+        case "POST":
+          let reqBody = ''
+    
+          request.on('data', (chunk)=>{
+            reqBody += chunk
+          })
+    
+          request.on('end', ()=>{
+            try {
+              const postData = JSON.parse(reqBody)
+
+              saveDataJson(postData, (error)=>{
+                if (error) {
+                  console.error(`Erro ao salvar dados no arquivo. Erro: ${error}`)
+                  response.statusCode = 500
+                  response.end(`Erro ao salvar dados no arquivo. Erro: ${error}`)
+                }else{
+                  console.log("Dados salvos com sucesso!")
+                  response.statusCode = 200
+                  response.end("Dados salvos com sucesso!")
+                }
+              })
+              
+            } catch (error) {
+              console.error(`Erro ao analisar os dados do POST. Erro: ${error}`)
+                  response.statusCode = 400
+                  response.end(`Erro ao analisar os dados do POST. Erro: ${error}`)
+            }
+          })
+        break;
+      }
       break;
-    case "POST":
-    console.log("post")
-    break;
+    default:
+      break;
   }
 })
 
