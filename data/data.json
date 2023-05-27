@@ -1,0 +1,22 @@
+{
+  "produtos": [
+    {
+      "nome": "Produto 1",
+      "peso": 0.5,
+      "quantidade": 10,
+      "codigo": "ABCD123"
+    },
+    {
+      "nome": "Produto 2",
+      "peso": 1.2,
+      "quantidade": 5,
+      "codigo": "EFGH456"
+    },
+    {
+      "nome": "Produto 3",
+      "peso": 0.8,
+      "quantidade": 2,
+      "codigo": "IJKL789"
+    }
+  ]
+}
