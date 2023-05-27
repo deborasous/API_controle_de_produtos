@@ -31,13 +31,23 @@ const server =http.createServer((request, response)=>{
   //roteamento
   switch (request.method) {
     case "GET":
-      
+      readFileJson('data/data.json', (error, data)=>{
+        if (error) {
+          console.error("Erro ao ler os dados do arquivo.", error)
+          return
+        }
+        response.writeHead(200, {
+          'Content-Type': 'application/json, charset=utf-8'
+        })
+        response.end(JSON.stringify(data))
+        console.log(`Lista de produtos: ${data}`)
+      })
       break;
     case "POST":
-    
+    console.log("post")
     break;
   }
 })
 
-const port =3333
+const port = 3331
 server.listen(port, ()=>{console.log(`Servidor rodando na porta ${port}`)})
