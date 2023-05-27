@@ -1,8 +1,9 @@
 const http = require("http")
 const fs = require("fs")
+const { error } = require("console")
 
 function readFileJson(fileJson, callback) {
-  fs.readFileSync(fileJson, "utf-8", (error, data)=>{
+  fs.readFile(fileJson, "utf-8", (error, data)=>{
     if (error) {
       callback(error, null)
       return
@@ -25,6 +26,33 @@ function readFileJson(fileJson, callback) {
   })
 }
 
+function saveDataJson(datas, callback) {
+  fs.readFile('data/data.json', 'utf-8',(error, data)=>{
+    if (error) {
+      callback(error)
+      return
+    }
+
+    /**
+     * Se a leitura do arquivo for bem sucedida o bloco try é acionado convertendo o json em objeto e salvando na variável, e adiciona os novos dados ao array. O writeFile vai converter objeto em json e salvar no arquivo.
+     */
+    try {
+      const productData = JSON.parse(data)
+      productData.push(datas)
+
+      fs.writeFile("data/data.json", JSON.stringify(productData), 'utf-8', (error)=>{
+        if (error) {
+          callback(error)
+          return
+        }
+        callback(null)
+      })
+
+    } catch (error) {
+      callback(error)
+    }
+  })
+}
 
 const server =http.createServer((request, response)=>{
 
